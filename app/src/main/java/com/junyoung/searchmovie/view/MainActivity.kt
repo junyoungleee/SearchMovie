@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.junyoung.searchmovie.Injection
 import com.junyoung.searchmovie.MovieApplication
 import com.junyoung.searchmovie.R
@@ -24,6 +25,8 @@ import com.junyoung.searchmovie.view.adapter.MovieLoadStateAdapter
 import com.junyoung.searchmovie.viewmodel.MovieSearchViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.view = this
         initRecyclerView()
+        initSearch()
     }
 
     override fun onStart() {
@@ -63,12 +67,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         })
-
-        binding.rcMovieList.adapter = movieAdapter.withLoadStateHeaderAndFooter(
-            header = MovieLoadStateAdapter { movieAdapter.retry() },
-            footer = MovieLoadStateAdapter { movieAdapter.retry() }
-        )
-
         movieAdapter.addLoadStateListener { loadState ->
             with(binding) {
                 tvNoResult.isVisible = loadState.refresh is LoadState.NotLoading && movieAdapter.itemCount == 0
@@ -76,6 +74,14 @@ class MainActivity : AppCompatActivity() {
                 pbLoading.isVisible = loadState.mediator?.refresh is LoadState.Loading
                 btnRetry.isVisible = loadState.mediator?.refresh is LoadState.Error
             }
+        }
+
+        with(binding.rcMovieList) {
+            itemAnimator = null
+            adapter = movieAdapter.withLoadStateHeaderAndFooter(
+                header = MovieLoadStateAdapter { movieAdapter.retry() },
+                footer = MovieLoadStateAdapter { movieAdapter.retry() }
+            )
         }
     }
 
@@ -93,6 +99,15 @@ class MainActivity : AppCompatActivity() {
 
             val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             manager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
+    }
+
+    private fun initSearch() {
+        lifecycleScope.launch {
+            movieAdapter.loadStateFlow
+                .distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { binding.rcMovieList.scrollToPosition(0) }
         }
     }
 
