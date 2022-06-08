@@ -6,12 +6,10 @@ import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -24,11 +22,8 @@ import com.junyoung.searchmovie.databinding.ActivityMainBinding
 import com.junyoung.searchmovie.view.adapter.MovieAdapter
 import com.junyoung.searchmovie.view.adapter.MovieLoadStateAdapter
 import com.junyoung.searchmovie.viewmodel.MovieSearchViewModel
-import com.junyoung.searchmovie.viewmodel.MovieSearchViewModelFactory
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {

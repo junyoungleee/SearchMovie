@@ -1,7 +1,6 @@
 package com.junyoung.searchmovie.data.paging
 
 import android.text.Html
-import android.text.TextUtils
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState

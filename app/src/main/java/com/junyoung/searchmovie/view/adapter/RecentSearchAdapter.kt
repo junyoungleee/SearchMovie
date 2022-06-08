@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.junyoung.searchmovie.R
-import com.junyoung.searchmovie.databinding.ItemMovieBinding
 import com.junyoung.searchmovie.databinding.ItemSearchWordBinding
 
 class RecentSearchAdapter(private val clickListener: WordClickListener)
