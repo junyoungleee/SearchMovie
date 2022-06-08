@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         movieAdapter.addLoadStateListener { loadState ->
             with(binding) {
+                tvNoResult.isVisible = loadState.refresh is LoadState.NotLoading && movieAdapter.itemCount == 0
                 rcMovieList.isVisible = loadState.mediator?.refresh is LoadState.NotLoading
                 pbLoading.isVisible = loadState.mediator?.refresh is LoadState.Loading
                 btnRetry.isVisible = loadState.mediator?.refresh is LoadState.Error
