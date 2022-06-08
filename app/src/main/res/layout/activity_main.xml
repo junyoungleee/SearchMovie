@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/space_x_small"
                 android:text="@string/search"
-                android:onClick="@{()->view.searchMovie()}"/>
+                android:onClick="@{()->view.searchMovie(etSearchWord.getText().toString())}"/>
 
             <Button
                 android:id="@+id/btn_recent_search"

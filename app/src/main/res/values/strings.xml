@@ -9,4 +9,6 @@
     <string name="movie_title">제목 : %1$s</string>
     <string name="movie_date">출시 : %1$s</string>
     <string name="movie_rating">평점 : %1$s</string>
+
+    <string name="toast_no_word">검색어를 입력해주세요!</string>
 </resources>

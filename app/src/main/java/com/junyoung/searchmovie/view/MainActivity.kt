@@ -1,10 +1,16 @@
 package com.junyoung.searchmovie.view
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -30,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var movieVM: MovieSearchViewModel
 
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var movieAdapter : MovieAdapter
     private var searchJob: Job? = null
 
@@ -43,6 +50,17 @@ class MainActivity : AppCompatActivity() {
 
         binding.view = this
         initRecyclerView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val word = it.data?.getStringExtra("search_word").toString()
+                searchMovie(word)
+                binding.etSearchWord.setText(word)
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -65,20 +83,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun searchMovie() {
-        val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-
-        searchJob?.cancel()
-        searchJob = lifecycleScope.launch {
-            movieVM.searchMovie("${binding.etSearchWord.text}").collect {
-                movieAdapter.submitData(it)
+    fun searchMovie(query: String) {
+        if (query == "") {
+            Toast.makeText(this, getString(R.string.toast_no_word), Toast.LENGTH_SHORT).show()
+        } else {
+            searchJob?.cancel()
+            searchJob = lifecycleScope.launch {
+                movieVM.searchMovie(query).collect {
+                    movieAdapter.submitData(it)
+                }
             }
+            MovieApplication.pref.updateSearchWord(query)
+
+            val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
 
     fun goToRecentSearch() {
         val intent = Intent(this, RecentSearchActivity::class.java)
-        startActivity(intent)
+        activityResultLauncher.launch(intent)
     }
 }
