@@ -13,10 +13,10 @@
 + 검색어 클릭 시, 해당 검색어에 대한 검색 내용을 보여줌
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/55984242/172930160-bcbecf0f-11f1-4f04-96b1-c75aa6609869.gif" height="470" width="210"/>
-  <img src="https://user-images.githubusercontent.com/55984242/172931276-b6f0f354-620a-44ca-bba4-ba80154ed190.gif" height="470" width="210"/>
-  <img src="https://user-images.githubusercontent.com/55984242/172931395-380c08ca-6e34-43d1-88c4-8820b9094e41.gif" height="470" width="210"/>
-  <img src="https://user-images.githubusercontent.com/55984242/172931460-20da7371-9c74-4395-98c9-587bf49da4b1.gif" height="470" width="210"/>
+  <img src="https://user-images.githubusercontent.com/55984242/172930160-bcbecf0f-11f1-4f04-96b1-c75aa6609869.gif" height="420" width="190"/>
+  <img src="https://user-images.githubusercontent.com/55984242/172931276-b6f0f354-620a-44ca-bba4-ba80154ed190.gif" height="420" width="190"/>
+  <img src="https://user-images.githubusercontent.com/55984242/172931395-380c08ca-6e34-43d1-88c4-8820b9094e41.gif" height="420" width="190"/>
+  <img src="https://user-images.githubusercontent.com/55984242/172931460-20da7371-9c74-4395-98c9-587bf49da4b1.gif" height="420" width="190"/>
 </p>
 
 ## 💡 Development
